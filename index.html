@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Our Collection</title>
+  <link rel="icon" type="image/png" href="logo.png"/>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --cream: #FAF8F4;
+      --parchment: #F2EDE5;
+      --ink: #1C1A17;
+      --muted: #7A7469;
+      --accent: #B8925A;
+      --accent-light: #E8D9C4;
+      --border: #DDD6CB;
+    }
+
+    body {
+      background: var(--cream);
+      color: var(--ink);
+      font-family: 'Jost', sans-serif;
+      font-weight: 300;
+      min-height: 100vh;
+    }
+
+    header {
+      text-align: center;
+      padding: 5rem 2rem 3rem;
+      border-bottom: 1px solid var(--border);
+      position: relative;
+    }
+
+    .header-action {
+      position: absolute;
+      top: 2rem;
+      right: 2rem;
+    }
+
+    .enter-product-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: none;
+      border: 1px solid var(--ink);
+      color: var(--ink);
+      font-family: 'Jost', sans-serif;
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      padding: 0.55rem 1.1rem;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.22s ease;
+    }
+
+    .enter-product-btn:hover {
+      background: var(--ink);
+      color: var(--cream);
+    }
+
+    .enter-product-btn svg {
+      width: 10px;
+      height: 10px;
+      flex-shrink: 0;
+      transition: transform 0.22s ease;
+    }
+
+    .enter-product-btn:hover svg {
+      transform: translateX(2px);
+    }
+
+    .eyebrow {
+      font-family: 'Jost', sans-serif;
+      font-size: 0.7rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 1rem;
+    }
+
+    h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2.8rem, 6vw, 4.5rem);
+      font-weight: 300;
+      line-height: 1.05;
+      letter-spacing: -0.01em;
+      color: var(--ink);
+    }
+
+    h1 em {
+      font-style: italic;
+      color: var(--accent);
+    }
+
+    .subtitle {
+      margin-top: 1rem;
+      font-size: 0.85rem;
+      letter-spacing: 0.12em;
+      color: var(--muted);
+      font-weight: 300;
+    }
+
+    .filter-bar {
+      display: flex;
+      justify-content: center;
+      gap: 0.25rem;
+      padding: 2rem 2rem 0;
+      flex-wrap: wrap;
+    }
+
+    .filter-btn {
+      background: none;
+      border: 1px solid transparent;
+      padding: 0.45rem 1.2rem;
+      font-family: 'Jost', sans-serif;
+      font-size: 0.72rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--muted);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      border-radius: 0;
+    }
+
+    .filter-btn:hover, .filter-btn.active {
+      color: var(--ink);
+      border-color: var(--border);
+    }
+
+    .filter-btn.active {
+      background: var(--parchment);
+    }
+
+    main {
+      max-width: 1320px;
+      margin: 0 auto;
+      padding: 3rem 2rem 6rem;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 2px;
+    }
+
+    .card {
+      background: var(--cream);
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.3s ease;
+    }
+
+    .card:hover { transform: translateY(-4px); }
+
+    .card:hover .card-img img { transform: scale(1.05); }
+
+    .card-img {
+      aspect-ratio: 3/4;
+      overflow: hidden;
+      background: var(--parchment);
+      position: relative;
+    }
+
+    .card-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      display: block;
+    }
+
+    .badge {
+      position: absolute;
+      top: 1rem;
+      left: 1rem;
+      background: var(--ink);
+      color: var(--cream);
+      font-size: 0.6rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      padding: 0.3rem 0.65rem;
+    }
+
+    .badge.sale { background: var(--accent); }
+
+    .card-body {
+      padding: 1.1rem 1rem 1.4rem;
+      border-bottom: 1px solid var(--border);
+      border-left: 1px solid var(--border);
+      border-right: 1px solid var(--border);
+    }
+
+    .card-desc {
+      font-size: 0.8rem;
+      color: var(--muted);
+      line-height: 1.55;
+      margin-bottom: 0.75rem;
+    }
+
+    .card-category {
+      font-size: 0.62rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 0.4rem;
+    }
+
+    .card-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.25rem;
+      font-weight: 400;
+      line-height: 1.25;
+      color: var(--ink);
+      margin-bottom: 0.7rem;
+    }
+
+    .card-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .price {
+      font-size: 0.9rem;
+      font-weight: 500;
+      letter-spacing: 0.05em;
+      color: var(--ink);
+    }
+
+    .price-original {
+      font-size: 0.8rem;
+      color: var(--muted);
+      text-decoration: line-through;
+      margin-left: 0.4rem;
+      font-weight: 300;
+    }
+
+    .add-btn {
+      background: none;
+      border: 1px solid var(--ink);
+      color: var(--ink);
+      font-family: 'Jost', sans-serif;
+      font-size: 0.65rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      padding: 0.4rem 0.9rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .add-btn:hover {
+      background: var(--ink);
+      color: var(--cream);
+    }
+
+    .featured {
+      grid-column: span 2;
+    }
+
+    .featured .card-img {
+      aspect-ratio: 16/9;
+    }
+
+    @media (max-width: 640px) {
+      .featured { grid-column: span 1; }
+      .featured .card-img { aspect-ratio: 3/4; }
+      .header-action { position: static; margin-top: 1.5rem; display: flex; justify-content: center; }
+    }
+
+    .status-msg {
+      text-align: center;
+      padding: 4rem 2rem;
+      color: var(--muted);
+      font-size: 0.75rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+    }
+
+    .status-msg.error { color: var(--accent); }
+
+    footer {
+      text-align: center;
+      padding: 3rem;
+      border-top: 1px solid var(--border);
+      font-size: 0.72rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="header-action">
+    <a href="add-product.html" class="enter-product-btn">
+      Enter Product
+      <svg viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M1 5h8M5.5 1.5L9 5l-3.5 3.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </a>
+  </div>
+  <p class="eyebrow">Curated Selection</p>
+  <h1>The <em>Aesthetic</em></h1>
+  <p class="subtitle">Crafted with intention &nbsp;&mdash;&nbsp; designed to endure</p>
+</header>
+
+<div class="filter-bar" id="filter-bar">
+  <button class="filter-btn active" data-cat="all">All</button>
+</div>
+
+<main>
+  <div id="grid-wrapper">
+    <p class="status-msg" id="status">Loading collection&hellip;</p>
+  </div>
+</main>
+
+<footer>
+  &copy; 2026 &nbsp;&mdash;&nbsp; All pieces are made to order
+</footer>
+
+<script>
+  // ── Google Sheet published as CSV ────────────────────────────────────────
+  const CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTkBNlmmVXXSu7VdVx_Q_7d0VV6M3JYnxnmozUx_XqP8wvG5V6yllmpTAVK-zb8LlP545-lewLDHQu6/pub?output=csv';
+
+  // ── RFC-4180-compliant CSV parser ────────────────────────────────────────
+  function parseCSV(raw) {
+    const rows = [];
+    let cur = '', inQ = false, cells = [];
+    for (let i = 0; i < raw.length; i++) {
+      const c = raw[i], nx = raw[i + 1];
+      if (c === '"') {
+        if (inQ && nx === '"') { cur += '"'; i++; }
+        else { inQ = !inQ; }
+      } else if (c === ',' && !inQ) {
+        cells.push(cur.trim()); cur = '';
+      } else if ((c === '\n' || c === '\r') && !inQ) {
+        if (c === '\r' && nx === '\n') i++;
+        cells.push(cur.trim()); cur = '';
+        if (cells.some(v => v)) rows.push(cells);
+        cells = [];
+      } else {
+        cur += c;
+      }
+    }
+    cells.push(cur.trim());
+    if (cells.some(v => v)) rows.push(cells);
+    if (rows.length < 2) return [];
+    const headers = rows[0].map(h => h.toLowerCase().replace(/\s+/g, '_'));
+    return rows.slice(1).map(vals => {
+      const obj = {};
+      headers.forEach((h, i) => { obj[h] = (vals[i] || '').trim(); });
+      return obj;
+    });
+  }
+
+  // ── Price helper ─────────────────────────────────────────────────────────
+  function fmt(v) {
+    const s = (v || '').trim();
+    return s ? (/^[$\u20AC\u00A3\u00A5]/.test(s) ? s : '$' + s) : '';
+  }
+
+  // ── Build one card ───────────────────────────────────────────────────────
+  // Accepted column names (all lowercase, spaces become underscores):
+  //   name, category, description / desc, price, original_price,
+  //   badge, image / img, featured
+  function buildCard(p, defaultFeatured) {
+    const name    = p.name     || '';
+    const cat     = p.category || '';
+    const catKey  = cat.toLowerCase().replace(/\s+/g, '-');
+    const desc    = p.description || p.desc || '';
+    const price   = fmt(p.price);
+    const orig    = fmt(p.original_price);
+    const badge   = (p.badge || '').trim();
+    const imgSrc  = p.image || p.imagen || p.img || '';
+    const featVal = (p.featured || '').toLowerCase();
+    const isFeat  = featVal === 'true' || featVal === 'yes' || defaultFeatured;
+    const isSale  = badge.toLowerCase() === 'sale';
+
+    return `
+      <div class="card${isFeat ? ' featured' : ''}" data-cat="${catKey}"${isFeat ? ' data-featured' : ''}>
+        <div class="card-img">
+          <img src="${imgSrc}" alt="${name}" onerror="this.style.opacity='0'"/>
+          ${badge ? `<span class="badge${isSale ? ' sale' : ''}">${badge}</span>` : ''}
+        </div>
+        <div class="card-body">
+          ${desc ? `<p class="card-desc">${desc}</p>` : ''}
+          <p class="card-category">${cat}</p>
+          <p class="card-name">${name}</p>
+          <div class="card-footer">
+            <span class="price">${price}${orig ? ` <span class="price-original">${orig}</span>` : ''}</span>
+            <button class="add-btn">Add to cart</button>
+          </div>
+        </div>
+      </div>`;
+  }
+
+  // ── Filter ───────────────────────────────────────────────────────────────
+  function applyFilter(cat) {
+    document.querySelectorAll('.card').forEach(c => {
+      c.style.display = (cat === 'all' || c.dataset.cat === cat) ? '' : 'none';
+    });
+    const fc = document.querySelector('.card[data-featured]');
+    if (fc) fc.classList.toggle('featured', cat === 'all' || fc.dataset.cat === cat);
+  }
+
+  // ── Filter bar ───────────────────────────────────────────────────────────
+  function buildFilters(cats) {
+    const bar = document.getElementById('filter-bar');
+    cats.forEach(cat => {
+      const label = cat.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+      const btn = document.createElement('button');
+      btn.className = 'filter-btn';
+      btn.dataset.cat = cat;
+      btn.textContent = label;
+      bar.appendChild(btn);
+    });
+    bar.addEventListener('click', e => {
+      const btn = e.target.closest('.filter-btn');
+      if (!btn) return;
+      bar.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      applyFilter(btn.dataset.cat);
+    });
+  }
+
+  // ── Main ─────────────────────────────────────────────────────────────────
+  async function init() {
+    const wrapper = document.getElementById('grid-wrapper');
+    const status  = document.getElementById('status');
+    try {
+      const res = await fetch(CSV_URL);
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      const products = parseCSV(await res.text()).filter(p => p.name);
+      if (!products.length) throw new Error('No products found in the sheet.');
+
+      // Unique categories in insertion order
+      const catSet = new Set();
+      products.forEach(p => {
+        const k = (p.category || '').toLowerCase().replace(/\s+/g, '-');
+        if (k) catSet.add(k);
+      });
+      buildFilters([...catSet]);
+
+      // If no row has featured=true/yes, make the first row featured
+      const hasExplicit = products.some(p => {
+        const v = (p.featured || '').toLowerCase();
+        return v === 'true' || v === 'yes';
+      });
+      const html = products.map((p, i) => buildCard(p, !hasExplicit && i === 0)).join('');
+      wrapper.innerHTML = `<div class="grid" id="grid">${html}</div>`;
+
+    } catch (err) {
+      console.error(err);
+      status.className = 'status-msg error';
+      status.textContent = 'Could not load collection — ' + err.message;
+    }
+  }
+
+  init();
+</script>
+</body>
+</html>
