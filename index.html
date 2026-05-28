@@ -376,7 +376,7 @@
     const price   = fmt(p.price);
     const orig    = fmt(p.original_price);
     const badge   = (p.badge || '').trim();
-    const imgSrc  = p.image || p.img || '';
+    const imgSrc  = p.image || p.imagen || p.img || '';
     const featVal = (p.featured || '').toLowerCase();
     const isFeat  = featVal === 'true' || featVal === 'yes' || defaultFeatured;
     const isSale  = badge.toLowerCase() === 'sale';
